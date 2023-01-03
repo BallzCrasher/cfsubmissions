@@ -9,11 +9,13 @@ parser.add_argument("handle", type=str, help="handle of the user")
 parser.add_argument('--min', type=int, help='min value of problem rating')
 parser.add_argument('--max', type=int, help='max value of problem rating')
 config = parser.parse_args().__dict__
+print(config)
 
 #sending API request
 response = urllib.request.urlopen(f"{BASE_URL}/api/user.status?handle={config['handle']}")
 print("Finished requesting")
 response = json.loads(response.read().decode('utf-8'))
+print("Finished reading request")
 if response['status'] != 'OK':
     print("API request faild. Aborting...")
     exit(1)
@@ -22,9 +24,9 @@ if response['status'] != 'OK':
 for submission in response['result']:
     if 'rating' not in submission['problem']:
         continue
-    if config['--min'] and submission['problem']['rating'] < config['--min']:
+    if config['min'] and submission['problem']['rating'] < config['min']:
         continue
-    if config['--max'] and submission['problem']['rating'] > config['--max']:
+    if config['max'] and submission['problem']['rating'] > config['max']:
         continue
     contest = submission['problem']['contestId']
     sub_id = submission['id']
