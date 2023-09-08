@@ -11,8 +11,18 @@ parser.add_argument('--max', type=int, help='max value of problem rating')
 config = parser.parse_args().__dict__
 print(config)
 
+
 #sending API request
-response = urllib.request.urlopen(f"{BASE_URL}/api/user.status?handle={config['handle']}")
+url = f"{BASE_URL}/api/user.status?handle={config['handle']}"
+header = { 
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+}
+request = urllib.request.Request(
+    url,
+    data = None,
+    headers = header
+)
+response = urllib.request.urlopen(request)
 print("Finished requesting")
 response = json.loads(response.read().decode('utf-8'))
 print("Finished reading request")
